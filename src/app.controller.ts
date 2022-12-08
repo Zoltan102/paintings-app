@@ -12,7 +12,7 @@ export class AppController {
   @Render('list')
   async listPaintings(@Query('year') year = 1990) {
     const [rows] = await db.execute(
-      'SELECT title, id FROM paintings WHERE year > ?',
+      'SELECT title, id, year, on_display FROM paintings WHERE year > ?',
       [year]
     );
 
@@ -35,8 +35,44 @@ export class AppController {
       'INSERT INTO paintings (title, year, on_display) VALUES (?, ?, ?)',
       [painting.title, painting.year, painting.on_display]
     );
+    console.log(result)
     return {
       url: '/paintings/' + result.insertId
+    }
+  }
+
+  @Post('paintings/:id/delete')
+  @Redirect()
+  async deletePainting(@Param('id') id: number){
+    const [asd]: any = await db.execute(
+      'DELETE FROM paintings WHERE id = ?',
+      [id]
+    );
+    return {
+      url: "/",
+    };
+  }
+
+  @Get('paintings/:id/edit')
+  @Render('edit')
+  async editPaintForm(@Param('id') id: number){
+        const [rows]= await db.execute(
+      'SELECT id, title, year, on_display FROM paintings WHERE id = ?',
+      [id]
+    );
+
+    return {painting: rows[0]};
+  }
+
+  @Post('paintings/:id/edit')
+  @Redirect()
+  async editPainting(@Body() painting: PaintingDto){
+    const [result] : any = await db.execute(
+      'UPDATE paintings SET title = ? year = ? on_display = ? WHERE id = ?',
+      [painting.title, painting.year, painting.on_display, painting.id]
+    );
+    return {
+      url: '/paintings/' + painting.id,
     }
   }
 
@@ -44,7 +80,7 @@ export class AppController {
   @Render('show')
   async showPainting(@Param('id') id: number){
     const [rows]= await db.execute(
-      'SELECT title, year, on_display FROM paintings WHERE id = ?',
+      'SELECT id, title, year, on_display FROM paintings WHERE id = ?',
       [id]
     );
 

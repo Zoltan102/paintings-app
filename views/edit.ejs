@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="main.js"></script>
+</head>
+<body>
+    <form action="/paintings/<%= painting.id %>/edit" method="post">
+        <p>
+            Title: <input type="text" value="<%= painting.title %> " name="title">
+        </p>
+        <p>
+            Year: <input type="number" value="<%= painting.year %> " name="year">
+        </p>
+        <p>
+            On display: <input type="checkbox" name="on_display" value="<%= painting.on_display %> ">
+        </p>
+        <p>
+            <input type="submit" value="Done">
+        </p>
+    </form> 
+</body>
+</html>

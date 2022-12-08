@@ -18,5 +18,11 @@
             <% } %> 
         </li>
     </ul>
+    <form method="POST" action="/paintings/<%= painting.id %>/delete">
+        <input type="submit" value="DELETE" style="color: red">
+    </form>
+    <form method="POST" action="/paintings/<%= painting.id %>/edit">
+        <input type="submit" value="EDIT">
+    </form>
 </body>
 </html>
